@@ -4,7 +4,7 @@ import Burger from '../../Components/Burger/Burger';
 import BuildControls from "../../Components/Burger/BuildControls/BuildControls";
 //global constant in all capital characters
 const INGREDIENT_PRICES= {
-    salad:1,
+    salad:1.50,
     cheese:1,
     meat:2,
     bacon:2
@@ -17,8 +17,23 @@ class BurgerBuilder extends React.Component{
             cheese:0,
             meat:0
         },
-        totalPrice:0
+        totalPrice:0,
+        purchasable: false
     }
+
+    updatePurchaseState(ingredient){
+        const ingredients={...this.state.ingredient}
+       const sum= Object.keys(ingredients)
+       .map(igKey=> {
+           return ingredients[igKey]; 
+       })
+       .reduce ((sum, element) => {
+        return sum+element;
+       }, 0);
+       this.setState({purchasable:sum>0 });// returnsd either truw or false
+    
+}
+
     addIngredientHandler=(type)=> {
         const oldCount= this.state.ingredient[type];
         const updatedCount= oldCount+1;
@@ -31,6 +46,7 @@ class BurgerBuilder extends React.Component{
         const oldPrice=this.state.totalPrice;
         const newPrice=oldPrice+priceAddition;
         this.setState({totalPrice:newPrice, ingredient:updatedIngredients})
+        this.updatePurchaseState(updatedIngredients);
     }
 
     removeIngredientHandler=(type)=> {
@@ -47,6 +63,7 @@ class BurgerBuilder extends React.Component{
         const oldPrice=this.state.totalPrice;
         const newPrice=oldPrice-priceDeduction;
         this.setState({totalPrice:newPrice, ingredient:updatedIngredients})
+        this.updatePurchaseState(updatedIngredients);
     }
 
 
@@ -57,7 +74,7 @@ class BurgerBuilder extends React.Component{
         //disabledinfo key is the value of each key
         //loop through all the keay sin disabled info and check the value
         for  (let key in disabledInfo) {
-            disabledInfo[key]=disabledInfo[key]<=0;// this check will return true or false
+            disabledInfo[key]=disabledInfo[key]<=0// this check will return true or false
         }
         return(
             <Aux>
@@ -65,10 +82,11 @@ class BurgerBuilder extends React.Component{
                 <BuildControls ingredientAdded= {this.addIngredientHandler}
                                 ingredientRemoved={this.removeIngredientHandler}
                                 disabled={disabledInfo}
-                                price={this.state.totalPrice}/>
+                                price={this.state.totalPrice}
+                                purchasable={this.state.purchasable}/>
             </Aux>
         );
-    }
+    };
 
 }
 
