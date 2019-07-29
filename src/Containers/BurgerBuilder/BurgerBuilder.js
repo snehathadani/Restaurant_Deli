@@ -22,10 +22,10 @@ class BurgerBuilder extends React.Component{
     }
 
     updatePurchaseState(ingredient){
-        const ingredients={...this.state.ingredient}
-       const sum= Object.keys(ingredients)
+        //const ingredients={...this.state.ingredient}
+       const sum= Object.keys(ingredient)
        .map(igKey=> {
-           return ingredients[igKey]; 
+           return ingredient[igKey]; 
        })
        .reduce ((sum, element) => {
         return sum+element;
