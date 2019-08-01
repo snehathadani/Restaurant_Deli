@@ -16,3 +16,13 @@
 .Toolbar nav {
     height:100%; /*in the nav, height can be controlled and height ll be relative to the toolbar height*/
 }
+
+.Logo {
+    height:80%;
+}
+
+@media (max-width:499px) {
+    .DesktopOnly {
+        display:none;
+    }
+}
