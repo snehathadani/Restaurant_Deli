@@ -3,15 +3,32 @@ import Aux from '../../HOC/Aux';
 import classes from './Layout.module.css';
 import ToolBar from '../Navigation/ToolBar/ToolBar';
 import SideDrawer from '../Navigation/SideDrawer/SideDrawer';
-const Layout =(props)=> (
+class Layout extends React.Component{ 
+    state={
+        showSideDrawer:true
+    }
+    sideDrawerClosedHandler=()=> {
+        this.setState({showSideDrawer:false});
+    }
+    sideDrawerToggleHandler=()=> {
+        this.setState((prevState)=> {
+            return {showSideDrawer:!prevState.showSideDrawer}
+        } );
+    }
+
+    render(){
+    return(
     <Aux>
-    <ToolBar/>
-    <SideDrawer/>
+    <ToolBar drawerToggleClicked={this.sideDrawerToggleHandler}/>
+    <SideDrawer open={this.state.showSideDrawer}
+                closed={this.sideDrawerClosedHandler}/>
     <main className= {classes.Content}>
-        {props.children}
+        {this.props.children}
     </main>
     </Aux>
-)
+);
+}
+}
 
 
 export default Layout;
